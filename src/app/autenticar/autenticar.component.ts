@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class AutenticarComponent {
 
   //construtor
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private spinner: NgxSpinnerService
   ) { }
 
 
@@ -42,6 +44,9 @@ export class AutenticarComponent {
   onSubmit(): void {
 
 
+    this.spinner.show();
+
+
     //limpar o valor das variáveis
     this.mensagem_sucesso = '';
     this.mensagem_erro = '';
@@ -60,7 +65,11 @@ export class AutenticarComponent {
         error: (e) => { //resposta de erro!
           this.mensagem_erro = e.error.mensagem;
         }
-      })
+      }).add(
+        () => {
+          this.spinner.hide();  
+        }
+      )
   }
 }
 
